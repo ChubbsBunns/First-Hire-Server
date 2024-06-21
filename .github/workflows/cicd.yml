@@ -13,9 +13,9 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
       - name: Build Docker Image
-        run: docker build -t sushantbagul/bookstore_backend  . (DockerHub Username/Repository Name . )
+        run: docker build -t ChubbsBunns/First-Hire-Server  . chubbsbunns/first-hire-backend
       - name: Publish Image to docker hub
-        run: docker push sushantbagul/bookstore_backend:latest (DockerHub Username/Repository Name:latest )
+        run: docker push ChubbsBunns/First-Hire-Server:latest chubbsbunns/first-hire-backend:latest
  
  
   deploy:
