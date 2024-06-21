@@ -23,8 +23,8 @@ jobs:
     runs-on: self-hosted 
     steps:
       - name: Pull image from docker hub
-        run: docker pull sushantbagul/bookstore_backend:latest (DockerHub Username/Repository Name:latest )
+        run: docker pull first-hire-backendlatest:latest
       - name: Delete old container
-        run: docker rm -f bookstore-backend-container (Old Container Name if any/New container Name)
+        run: docker rm -f first-hire-backendlatest
       - name: Run Docker Container
-        run: docker run -d -p 5555:5555(Configured Port:Configured Port) --name bookstore-backend-container(New Container Name) -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' sushantbagul/bookstore_backend (DockerHub Username/Repository Name)
+        run: docker run -d -p 3001:3001(Configured Port:Configured Port) --name first-hire-backendlatest -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' first-hire-backendlatest 
