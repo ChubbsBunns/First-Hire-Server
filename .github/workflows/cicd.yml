@@ -31,4 +31,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f first-hire-backend:latest
       - name: Run Docker Container
-        run: docker run -d -p 3001:3001 --name first-hire-backend:latest -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' chubbsbunns/first-hire-backend
+        run: docker run -d -p 3001:3001 --name first-hire-backend -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' chubbsbunns/first-hire-backend
