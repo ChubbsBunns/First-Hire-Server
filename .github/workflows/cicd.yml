@@ -1,0 +1,30 @@
+﻿name: Deploy BookStore-Backend (GitHub Repository Name)
+on: 
+  push:
+    branches:
+      - master (Branch where this repository is pushed previously)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+      - name: Build Docker Image
+        run: docker build -t sushantbagul/bookstore_backend  . (DockerHub Username/Repository Name . )
+      - name: Publish Image to docker hub
+        run: docker push sushantbagul/bookstore_backend:latest (DockerHub Username/Repository Name:latest )
+ 
+ 
+  deploy:
+    needs: build
+    runs-on: self-hosted 
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull sushantbagul/bookstore_backend:latest (DockerHub Username/Repository Name:latest )
+      - name: Delete old container
+        run: docker rm -f bookstore-backend-container (Old Container Name if any/New container Name)
+      - name: Run Docker Container
+        run: docker run -d -p 5555:5555(Configured Port:Configured Port) --name bookstore-backend-container(New Container Name) -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' sushantbagul/bookstore_backend (DockerHub Username/Repository Name)
