@@ -2,7 +2,7 @@
 on: 
   push:
     branches:
-      - master (Branch where this repository is pushed previously)
+      - main (Branch where this repository is pushed previously)
 
 jobs:
   build:
