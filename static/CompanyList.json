@@ -1,0 +1,8 @@
+{
+    "companyDetails": [
+        {"Shopback": "https://corporate.shopback.com/careers#job-section"},
+        {"Cloudflare": "https://www.cloudflare.com/careers/jobs/?location=Singapore"},
+        {"Visa": "https://www.visa.com.sg/en_sg/jobs/?cities=Singapore"},
+        {"TestWebsite": "https://test-first-hire-job-portal.vercel.app/"}
+    ]
+}
