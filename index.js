@@ -41,7 +41,7 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL.toString())
+mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster')
 /* mongoose.connect("mongodb://127.0.0.1:27017/database-test"); */
 
 scheduledJobScrape.initScheduledJobs();

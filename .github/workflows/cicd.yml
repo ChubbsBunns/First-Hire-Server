@@ -24,5 +24,7 @@ jobs:
     steps:  
       - name: Pull image from docker hub
         run: docker pull chubbsbunns/first-hire-backend:latest
+      - name: Delete old container
+        run: docker rmi -f first-hire-backend
       - name: Run Docker Container
         run: docker run -d -p 3001:3001 --name first-hire-backend -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' chubbsbunns/first-hire-backend
