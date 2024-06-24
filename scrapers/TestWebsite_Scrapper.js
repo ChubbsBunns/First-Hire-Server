@@ -1,6 +1,6 @@
 const { By, until } = require("selenium-webdriver");
 const helperFunctions = require("../helperFunctions/helperFunctions");
-const { Scrapper } = require("./scrapper");
+const { Scrapper } = require("./Scrapper.js");
 
 class TestWebsite_Scrapper extends Scrapper {
     async createCompanyJobSearchQuery(jobSearchQueryObject) {
