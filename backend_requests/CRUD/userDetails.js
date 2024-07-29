@@ -5,8 +5,7 @@ async function createUser(req, res) {
     try {
         const email = req.query.email
         const newUser = new User({email});
-        newUser.save().then(() => console.log("New user successfully saved 2"));
-        console.log("I am here")
+        newUser.save().then(() => console.log("New user successfully saved"));
         res.json(req.body)
     } catch(error) {
         console.log(error)

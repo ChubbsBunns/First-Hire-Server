@@ -15,13 +15,14 @@ const {getUserMatchingJobSearchObjects, getAllCurrentJobData} = require("./helpe
 
 //Helpers
 const {getCompanyList, getCompanyListNames} = require("./helperFunctions/helperFunctions.js")
-
 //Scheduler
 const scheduledJobScrape = require("./scheduledJobs/createNewJob")
 const {dailyEmailJob} = require("./backend_requests/EmailRequests/emailHelper.js")
 
 //Auth
 const { auth } = require('express-oauth2-jwt-bearer');
+const authRoutes = require("./Routes/AuthRoutes")
+
 
 const app = express();
 app.use(cors());
@@ -41,8 +42,11 @@ app.use(
   })
 );
 
-mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster')
-/* mongoose.connect("mongodb://127.0.0.1:27017/database-test"); */
+//mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster')
+mongoose.connect("mongodb://127.0.0.1:27017/database-test", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 scheduledJobScrape.initScheduledJobs();
 
@@ -105,6 +109,8 @@ app.get("/jobSearchQueries",checkJwt, async (req, res) => {
 
 app.get("/companyList", checkJwt, getCompanyList)
 app.get("/companyListNames", checkJwt, getCompanyListNames)
+
+app.use("/api/auth", authRoutes)
 
 app.listen(3001, () => {
   console.log("server is running on port 3001");
