@@ -42,18 +42,15 @@ app.use(
   })
 );
 
-//mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster')
+/* mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster&ssl=true',   
+  {useNewUrlParser: true,
+  useUnifiedTopology: true,}) */
 mongoose.connect("mongodb://127.0.0.1:27017/database-test", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 scheduledJobScrape.initScheduledJobs();
-
-const checkJwt = auth({
-  audience: "https://dev-dwtvfqfln7z0evht.us.auth0.com/api/v2/",
-  issuerBaseURL: `https://dev-dwtvfqfln7z0evht.us.auth0.com/`,
-});
 
 
 //Test routes
@@ -65,7 +62,7 @@ app.get('/api/public', function(req, res) {
 });
 
 // This route needs authentication
-app.get('/api/private', checkJwt, function(req, res) {
+app.get('/api/private', function(req, res) {
   res.json({
     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
   });
@@ -80,24 +77,22 @@ app.all("/*", function (req, res, next) {
 //Authentication
 
 app.get("/submitWebScrappingQuery", createJobSearchQueryObject);
+app.get("/user/getUser", getUser)
+app.post("/user/updateJobParameters", updateUser)
 
-app.post("/user/createUser", checkJwt, createUser)
-app.get("/user/getUser", checkJwt, getUser)
-app.post("/user/updateJobParameters", checkJwt, updateUser)
-
-app.get("/user/getUserMatchingJobs", checkJwt, getUserMatchingJobSearchObjects)
-app.get("/getAllCurrentJobData", checkJwt, getAllCurrentJobData)
+app.get("/user/getUserMatchingJobs", getUserMatchingJobSearchObjects)
+app.get("/getAllCurrentJobData", getAllCurrentJobData)
 app.get("/getUserDetails/:id", function(req, res) {
   const id = req.params.id;
   console.log(id);
   res.send(200)
 })
 
-app.get("/getLatestJobSearchQueryDate", checkJwt, getLatestJobSearchQueryDate);
+app.get("/getLatestJobSearchQueryDate", getLatestJobSearchQueryDate);
 
 /* app.get("/something", testFunction); */
 
-app.get("/jobSearchQueries",checkJwt, async (req, res) => {
+app.get("/jobSearchQueries", async (req, res) => {
   try {
     const data = await JobSearchObject.find();
     res.json(data);
@@ -107,8 +102,8 @@ app.get("/jobSearchQueries",checkJwt, async (req, res) => {
   }
 });
 
-app.get("/companyList", checkJwt, getCompanyList)
-app.get("/companyListNames", checkJwt, getCompanyListNames)
+app.get("/companyList", getCompanyList)
+app.get("/companyListNames", getCompanyListNames)
 
 app.use("/api/auth", authRoutes)
 

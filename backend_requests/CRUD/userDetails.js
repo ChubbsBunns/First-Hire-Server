@@ -28,6 +28,7 @@ async function getUser(req, res) {
             const newUpdatedUser = await User.findOne({
                 "email": emailToFind
             })
+            console.log("I have received the new user thingy")
             res.send(newUpdatedUser);
         } else {
             res.send(user)

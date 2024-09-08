@@ -81,7 +81,6 @@ async function createJobSearchQueryObject(req, res) {
         const companyNames = databaseCompanyDataList.companyDetails.map(companyDetail => Object.keys(companyDetail)[0]);
         let jobSearchObject = new JobSearchObject();
         jobSearchObject.date = helperFunctions.getCurrentParsedDate();
-        console.log(jobSearchObject.date)
         for (const companyName of companyNames) {
             switch (companyName) {
                 case "Shopback":

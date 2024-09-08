@@ -8,20 +8,17 @@ router.post("/login", async(req, res) => {
     try {
         const {email, password} = req.body;
         const user = await User.findOne({email});
-        if (!user) return res.status(400).send("Invalid username or password.");
+        if (!user) return res.status(400).send("Invalid username or password, or the user's email is not registered");
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword)
-            return res.status(400).send("Invalid username or password.");
+            return res.status(400).send("Invalid username or password, or the user's email is not registered");
         var token = ""
         try {
             token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);  
           } catch(err) {
-            console.log("The error occurs in the inability to sign the JWT SECRET")
             console.error(err)
           }
-          console.log("I HAVE DONE IT")
-          console.log("THE TOKEN IS " + token);
-          res.send({ token });
+          res.send({ token, email });
     } catch(err){
         console.error(err)
     }

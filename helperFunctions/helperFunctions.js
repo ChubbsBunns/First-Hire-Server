@@ -170,6 +170,7 @@ function saveCompanyResults(  jobOpenings,
   }
 
 async function getSpecificJobSearchObject(targetDate) {
+  console.log(targetDate)
   return JobSearchObject.findOne({ date: targetDate })
 }
 
@@ -186,47 +187,79 @@ async function getAllCurrentJobData(req, res) {
   const data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
   const currDate = JSON.parse(data).latestJobUpdateDate;
   let allJobDataObject = await getSpecificJobSearchObject(currDate)
-  const companyList = allJobDataObject.companyResults;
-  let id = 0;
-  let jobLinkDictionary = getJobLinkDictionary();
-  let jobDataList = [];
-  for (let companyIndex = 0; companyIndex < companyList.length; companyIndex++) {
-    const specificCompanyData = companyList[companyIndex];
-    for (let jobIndex = 0; jobIndex < specificCompanyData.results.length; jobIndex++ ) {
-      jobDataList.push({id : id, jobName: specificCompanyData.results[jobIndex], companyName: specificCompanyData.companyName, companyCareerPageLink: jobLinkDictionary.get(specificCompanyData.companyName)});
-      id += 1;
+  if (allJobDataObject == null) {
+    res.status(404).send("The Job Data object is empty");
+  } else {
+    const companyList = allJobDataObject.companyResults;
+    let id = 0;
+    let jobLinkDictionary = getJobLinkDictionary();
+    let jobDataList = [];
+    for (let companyIndex = 0; companyIndex < companyList.length; companyIndex++) {
+      const specificCompanyData = companyList[companyIndex];
+      for (let jobIndex = 0; jobIndex < specificCompanyData.results.length; jobIndex++ ) {
+        jobDataList.push({id : id, jobName: specificCompanyData.results[jobIndex], companyName: specificCompanyData.companyName, companyCareerPageLink: jobLinkDictionary.get(specificCompanyData.companyName)});
+        id += 1;
+      }
     }
+    res.json({
+      jobDataList
+    })
   }
-  res.json({
-    jobDataList
-  })
+
 }
 
 async function getUserMatchingJobSearchObjects(req, res) {
-  const userEmail = req.query.email;
-  const currentUser = await User.findOne({
-    "email": req.query.email
-  })
-  let keyPhrases = currentUser.keywordSettings.jobPhrases;
-  let negativePhrases = currentUser.keywordSettings.negativePhrases;
-  let selectedCompanies = currentUser.keywordSettings.selectedCompanies;  
-  const data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
-  const currDate = JSON.parse(data).latestJobUpdateDate;
-
-  //edit here
-
-  let currentJobSearchObject = await getSpecificJobSearchObject(currDate)
-  const companyList = currentJobSearchObject.companyResults;
-  if (companyList == undefined || companyList == null) {
-    res.json({
-
+  try {
+    const userEmail = req.query.email;
+    console.log("user email is " + userEmail)
+    const currentUser = await User.findOne({
+      "email": req.query.email
     })
-  }
-  //Filter company list to only have the user's specific companies
-  const newJobSearch = getMatchingJobsDataForWebpage(keyPhrases, negativePhrases, selectedCompanies, companyList)  
-  res.json({
-    newJobSearch
-  })
+    console.log("The current user is ")
+    console.log(currentUser)
+    if (currentUser.keywordSettings == null || currentUser.keywordSettings == undefined) {
+      res.json({
+        
+      })
+    }
+    else {
+      let keyPhrases = currentUser.keywordSettings.jobPhrases;
+      let negativePhrases = currentUser.keywordSettings.negativePhrases;
+      let selectedCompanies = currentUser.keywordSettings.selectedCompanies;  
+      const data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
+      const currDate = JSON.parse(data).latestJobUpdateDate;
+    
+      let currentJobSearchObject = await getSpecificJobSearchObject(currDate)
+      if (currentJobSearchObject == null || undefined) {
+        console.log("The current job search object is null or undefined")
+        res.status(404).send("The Job Data object is empty");
+      } 
+      else {
+        console.log("The current job search object is not null or undefined")
+        const companyList = currentJobSearchObject.companyResults;
+        if (companyList == undefined || companyList == null) {
+          console.log("Company list is undefined")
+          res.status(404).send("The Job Data object is empty");
+        } else {
+          //Filter company list to only have the user's specific companies
+          const newJobSearch = getMatchingJobsDataForWebpage(keyPhrases, negativePhrases, selectedCompanies, companyList)
+          console.log("Returned the response")
+          res.json({
+            newJobSearch
+          })
+        }
+    }  
+    }
+
+
+    } catch(err) {
+      console.log("1")
+      console.log(err.message)
+      console.log("2")
+      console.log("There was an error caught in the backend")
+      res.json({message: "Something went wrong"})
+    }
+
 }
 
 module.exports = { parseKeyWords, parseFilteredJobSearchObject: getMatchingJobsFromSpecifiedCompanyList, sendEmail, getSpecificJobSearchObject, getCurrentParsedDate, getFilteredJobs, saveCompanyResults, getCompanyList, getCompanyListNames, getUserMatchingJobSearchObjects, getAllCurrentJobData, getJobLinkDictionary, getFilteredList, testEmail };

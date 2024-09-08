@@ -24,11 +24,7 @@ const JobSearchObject = require("../models/JobSearchAction")
 /* "0 18 * * 1-5" */
 exports.initScheduledJobs = () => {
     const scheduledJobFunction = CronJob.schedule("0 18 * * 1-5", async () => {
-        console.log("Starting scheduled Job Scraping Task");
         await startJobScrappingJob() 
-        console.log("Finished " + helperFunctions.getCurrentParsedDate() + " Job Scrapping Job and succesfully saved data.")
-        //Send emails
-        console.log("Emails successfully sent to users");
     });
     scheduledJobFunction.start();
   }

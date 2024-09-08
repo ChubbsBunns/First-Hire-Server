@@ -39,6 +39,10 @@ async function dailyEmailJob() {
         let selectedCompanies = user.keywordSettings.selectedCompanies;
 
         const currDate = helperFunctions.getCurrentParsedDate();
+
+        //TODO REMOVE THIS WHEN PUSHING TO PROD
+        
+
         let currentJobSearchObject = await helperFunctions.getSpecificJobSearchObject(currDate);
         const companyList = currentJobSearchObject.companyResults;
         let filteredCompanyJobList = await getFilteredCompanyJobList(keyPhrases, negativePhrases, selectedCompanies, companyList);
