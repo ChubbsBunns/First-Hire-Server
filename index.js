@@ -80,6 +80,9 @@ app.all("/*", function (req, res, next) {
 
 app.get("/submitWebScrappingQuery", createJobSearchQueryObject);
 app.get("/user/getUser", getUser)
+app.get("/", (req, res) => {
+  res.json("First Hire backend is up and running")
+})
 app.post("/user/updateJobParameters", updateUser)
 
 app.get("/user/getUserMatchingJobs", getUserMatchingJobSearchObjects)
