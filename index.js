@@ -28,11 +28,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL)
+  .then(() => {
+    console.log("Connected to MongoDB Atlas");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB Atlas", error);
+  });
+
+scheduledJobScrape.initScheduledJobs();
+
 app.use(
   cors({
     origin: function (origin, callback) {
       const allowedOrigins = ["http://localhost:5173"];
       if (allowedOrigins.includes(origin)) {
+        console.log("Allowed origin")
+      } else {
+        console.log("Origin not allowed by CORS")
+      }
+      if (allowedOrigins.includes(origin) || !origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS" + " origin is " + origin));
@@ -42,19 +57,6 @@ app.use(
   })
 );
 
-/* mongoose.connect('mongodb+srv://troskproductions:1loveMongoDBAtlas!@firsthirecluster.vqb0rbx.mongodb.net/?retryWrites=true&w=majority&appName=firstHireCluster&ssl=true',   
-  {useNewUrlParser: true,
-  useUnifiedTopology: true,}) */
-mongoose.connect("mongodb://127.0.0.1:27017/database-test", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-scheduledJobScrape.initScheduledJobs();
-
-
-//Test routes
-// This route doesn't need authentication
 app.get('/api/public', function(req, res) {
   res.json({
     message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
@@ -89,8 +91,6 @@ app.get("/getUserDetails/:id", function(req, res) {
 })
 
 app.get("/getLatestJobSearchQueryDate", getLatestJobSearchQueryDate);
-
-/* app.get("/something", testFunction); */
 
 app.get("/jobSearchQueries", async (req, res) => {
   try {

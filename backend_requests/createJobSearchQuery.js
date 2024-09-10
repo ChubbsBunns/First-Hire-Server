@@ -78,6 +78,7 @@ async function startJobScrappingJob() {
 
 async function createJobSearchQueryObject(req, res) {
     try {
+      console.log("Job Search query object being created")
         const companyNames = databaseCompanyDataList.companyDetails.map(companyDetail => Object.keys(companyDetail)[0]);
         let jobSearchObject = new JobSearchObject();
         jobSearchObject.date = helperFunctions.getCurrentParsedDate();
