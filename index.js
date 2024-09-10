@@ -46,10 +46,10 @@ mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL)
 
 scheduledJobScrape.initScheduledJobs();
 
-app.use(
+/* app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = ["http://localhost:5173"];
+      const allowedOrigins = ["http://localhost:5173, https://first-hire-client.vercel.app"];
       if (allowedOrigins.includes(origin)) {
         console.log("Allowed origin")
       } else {
@@ -63,7 +63,7 @@ app.use(
     },
     credentials: true,
   })
-);
+); */
 
 app.get('/api/public', function(req, res) {
   res.json({
