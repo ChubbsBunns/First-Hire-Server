@@ -25,12 +25,15 @@ const authRoutes = require("./Routes/AuthRoutes")
 
 
 const app = express();
-app.use(cors(
-  {
-    origin: ["https://first-hire-client.vercel.app/"],
-    credentials: true
-  }
-));
+app.use(cors({
+  origin: "https://first-hire-client.vercel.app",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],    // Allowed headers
+  credentials: true                                     // If you need to allow credentials
+}));
+
+// Handle preflight requests
+app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL)
