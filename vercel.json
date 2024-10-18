@@ -12,5 +12,11 @@
       "src": "/(.*)",
       "dest": "/"
      }
+    ],
+    "crons": [
+        {
+            "path": "/scheduledJobs/createNewJob2",
+            "schedule": "*/5 * * * *"
+        }
     ]
    }
