@@ -40,10 +40,7 @@ async function dailyEmailJob() {
 
         const currDate = helperFunctions.getCurrentParsedDate();
 
-        //TODO REMOVE THIS WHEN PUSHING TO PROD
-        
-
-        let currentJobSearchObject = await helperFunctions.getSpecificJobSearchObject(currDate);
+        let currentJobSearchObject = await helperFunctions.getSpecificJobSearchObject();
         const companyList = currentJobSearchObject.companyResults;
         let filteredCompanyJobList = await getFilteredCompanyJobList(keyPhrases, negativePhrases, selectedCompanies, companyList);
 
@@ -95,7 +92,6 @@ async function dailyEmailJob() {
         let emailHtmlString = parseNewJobDataIntoEmailHtmlString(newlyAddedJobData);
         let emailTextString = parseNewJobDataIntoEmailTextString(newlyAddedJobData);
         await helperFunctions.sendEmail(user.email, user.name, emailHtmlString, emailTextString);
-        
     })
   } catch (err) {
     console.error(err);

@@ -169,9 +169,10 @@ function saveCompanyResults(  jobOpenings,
     })
   }
 
-async function getSpecificJobSearchObject(targetDate) {
-  console.log(targetDate)
-  return JobSearchObject.findOne({ date: targetDate })
+async function getSpecificJobSearchObject() {
+  return JobSearchObject.findOne({})
+  .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+  .exec();
 }
 
 async function getCompanyList(req, res) {
@@ -184,9 +185,7 @@ async function getCompanyListNames(req, res) {
 }
 
 async function getAllCurrentJobData(req, res) {
-  const data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
-  const currDate = JSON.parse(data).latestJobUpdateDate;
-  let allJobDataObject = await getSpecificJobSearchObject(currDate)
+  let allJobDataObject = await getSpecificJobSearchObject();
   if (allJobDataObject == null) {
     res.status(404).send("The Job Data object is empty");
   } else {
@@ -226,10 +225,8 @@ async function getUserMatchingJobSearchObjects(req, res) {
       let keyPhrases = currentUser.keywordSettings.jobPhrases;
       let negativePhrases = currentUser.keywordSettings.negativePhrases;
       let selectedCompanies = currentUser.keywordSettings.selectedCompanies;  
-      const data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
-      const currDate = JSON.parse(data).latestJobUpdateDate;
-    
-      let currentJobSearchObject = await getSpecificJobSearchObject(currDate)
+
+      let currentJobSearchObject = await getSpecificJobSearchObject();
       if (currentJobSearchObject == null || undefined) {
         console.log("The current job search object is null or undefined")
         res.status(404).send("The Job Data object is empty");

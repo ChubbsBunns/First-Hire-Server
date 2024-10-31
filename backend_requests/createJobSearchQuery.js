@@ -11,16 +11,6 @@ const databaseCompanyDataList = require("../static/CompanyList.json")
 const JobSearchObject = require("../models/JobSearchAction")
 
 //Get hard coded company names from CompanyList.json
-
-async function updateJobSearchQueryJSONDate() {
-  const currDate = helperFunctions.getCurrentParsedDate();
-  let data = await fs.readFile(latestJobUpdateFilePath, 'utf8');
-  data = JSON.parse(data);
-  data.latestJobUpdateDate = currDate;
-  const updatedData = JSON.stringify(data, null, 2);
-  fs.writeFile(latestJobUpdateFilePath, updatedData);
-}
-
 async function getLatestJobSearchQueryDate(req, res) {
   try {
     let data = await fs.readFile(latestJobUpdateFilePath, 'utf8'); 
@@ -69,7 +59,6 @@ async function startJobScrappingJob() {
               }
         }
         jobSearchObject.save().then(() => console.log("Job search new query updated successfully!")).catch((error) => console.error(error))
-        await updateJobSearchQueryJSONDate();
     } catch (err) {
         console.log(err);
         res.json(err);

@@ -23,11 +23,34 @@ const JobSearchObject = require("../models/JobSearchAction.js")
 
 /* "0 18 * * 1-5" */
 
-module.exports = async (req, res) => {
+/* module.exports = async (req, res) => {
   console.log("Cron job is starting...");
   try {
     console.log("Job about to start");
     const result = await startJobScrappingJob();
+    res.send({
+      status: 200,
+      message: "Cronjob Operation completed successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log("Error found in cronjob main")
+    // Handle any errors that occur during the async operation
+    res.status(500).send({
+      status: 500,
+      message: "An error occurred in cronjob",
+      error: error.message,
+    });
+  }
+}; */
+
+async function dailyJobScrapeCronJob(req, res) {
+  console.log("Cron job is starting...");
+  try {
+    console.log("Job about to start");
+    const result = await startJobScrappingJob();
+    console.log("Jobs scrapped successfully, sending emails now");
+    await dailyEmailJob();
     res.send({
       status: 200,
       message: "Cronjob Operation completed successfully!",
@@ -99,4 +122,6 @@ async function updateJobSearchQueryJSONDate() {
     data.latestJobUpdateDate = currDate;
     const updatedData = JSON.stringify(data, null, 2);
     fs.writeFile(latestJobUpdateFilePath, updatedData);
-  }
+}
+
+module.exports = {dailyJobScrapeCronJob};

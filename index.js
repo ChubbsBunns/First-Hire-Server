@@ -17,8 +17,9 @@ const {getUserMatchingJobSearchObjects, getAllCurrentJobData} = require("./helpe
 const {getCompanyList, getCompanyListNames} = require("./helperFunctions/helperFunctions.js")
 //Scheduler
 const scheduledJobScrape = require("./scheduledJobs/createNewJob")
-const {dailyEmailJob} = require("./backend_requests/EmailRequests/emailHelper.js")
 
+const {dailyEmailJob} = require("./backend_requests/EmailRequests/emailHelper.js")
+const {dailyJobScrapeCronJob} = require("./scheduledJobs/createNewJob2.js")
 //Auth
 const { auth } = require('express-oauth2-jwt-bearer');
 const authRoutes = require("./Routes/AuthRoutes")
@@ -120,6 +121,8 @@ app.get("/getUserDetails/:id", function(req, res) {
   res.send(200)
 })
 
+
+
 app.get("/getLatestJobSearchQueryDate", getLatestJobSearchQueryDate);
 
 app.get("/jobSearchQueries", async (req, res) => {
@@ -136,6 +139,9 @@ app.get("/companyList", getCompanyList)
 app.get("/companyListNames", getCompanyListNames)
 
 app.use("/api/auth", authRoutes)
+
+//Daily cronjob
+app.get("/getDailyData", dailyJobScrapeCronJob)
 
 app.listen(3001, () => {
   console.log("server is running on port 3001");
