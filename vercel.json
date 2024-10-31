@@ -16,7 +16,7 @@
     "crons": [
         {
             "path": "/getDailyData",
-            "schedule": "25 16 * * *"
+            "schedule": "55 00 * * *"
         }
     ]
    }
