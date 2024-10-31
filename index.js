@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
 app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL)
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB Atlas");
   })
