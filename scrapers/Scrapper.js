@@ -8,7 +8,7 @@ class Scrapper {
       .forBrowser("chrome")
       .setChromeOptions(options.addArguments("--headless=new"))
       .build();
-    await driver.manage().setTimeouts({ implicit: 20000 });
+    await driver.manage().setTimeouts({ implicit: 600000 });
     return driver;
   }
 }
