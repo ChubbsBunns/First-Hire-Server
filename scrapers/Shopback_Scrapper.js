@@ -3,7 +3,6 @@ const helperFunctions = require("../helperFunctions/helperFunctions");
 const { Scrapper } = require("./Scrapper.js");
 
 class Shopback_Scrapper extends Scrapper {
-//  async createCompanyJobSearchQuery(listOfKeywords, jobSearchQueryObject) {
   async createCompanyJobSearchQuery(jobSearchQueryObject) {
     try {
       let scrapper = new Scrapper();
