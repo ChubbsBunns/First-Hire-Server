@@ -27,7 +27,7 @@ const authRoutes = require("./Routes/AuthRoutes")
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://first-hire-server.vercel.app",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'],    // Allowed headers
   credentials: true                                     // If you need to allow credentials
@@ -55,14 +55,6 @@ app.use(function (req, res, next) {
 // Handle preflight requests
 app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json());
-
-/* mongoose.connect(process.env.MONGODB_ATLAS_CLUSTER_URL)
-  .then(() => {
-    console.log("Connected to MongoDB Atlas");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB Atlas", error);
-  }); */
 
   mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
