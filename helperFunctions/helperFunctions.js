@@ -217,9 +217,7 @@ async function getUserMatchingJobSearchObjects(req, res) {
     console.log("The current user is ")
     console.log(currentUser)
     if (currentUser.keywordSettings == null || currentUser.keywordSettings == undefined) {
-      res.json({
-        
-      })
+      res.json("User not found in backend")
     }
     else {
       let keyPhrases = currentUser.keywordSettings.jobPhrases;
@@ -250,9 +248,7 @@ async function getUserMatchingJobSearchObjects(req, res) {
 
 
     } catch(err) {
-      console.log("1")
       console.log(err.message)
-      console.log("2")
       console.log("There was an error caught in the backend")
       res.json({message: "Something went wrong"})
     }
